@@ -1,0 +1,615 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>WASN Scoreboard</title>
+	<script src="jquery-1.10.2.min.js"></script>
+	<style type="text/css">
+		body {
+			background: #e5e5e5; /* Green: #00ff00 */
+			font-family: "Helvetica";
+			font-weight: bold; }
+		 
+		#WIRECAST {
+			display: block;
+			height: 140px; 
+			}
+		 
+		#control_area {
+			background: white;
+			padding: 30px; }
+		 
+		#scoreboard {
+			background: url('Scoreboard_blank.jpg');
+			height: 71px;
+			margin: 30px auto 0 auto;
+			position: relative;
+			width: 1210px;
+			z-index: 1;
+			visibility: visible; }
+		 
+		 /* REMOVED */
+		#subscoreboard {
+			background: #818181; /* Old browsers */
+				background: -moz-linear-gradient(top, #818181 0%, #484848 100%); /* FF3.6+ */
+				background: -ms-linear-gradient(top, #818181 0%,#484848 100%); /* IE10+ */
+				background: -o-linear-gradient(top, #818181 0%,#484848 100%); /* Opera 11.10+ */
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#818181), color-stop(100%,#484848)); /* Chrome,Safari4+ */
+				background: -webkit-linear-gradient(top, #818181 0%,#484848 100%); /* Chrome10+,Safari5.1+ */
+				background: linear-gradient(to bottom, #818181 0%,#484848 100%); /* W3C */
+				filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#818181', endColorstr='#484848',GradientType=0 ); /* IE6-9 */
+			border: 4px solid #e5e5e5;
+			border-top: 0;
+			color: white;
+			font-size: 20px;
+			height: 30px;
+			margin: 0 auto 0 auto;
+			margin-top: -42px;
+			padding-top: 7px;
+			position:absolute;
+			text-align: center;
+			transition: margin 1s ease-in-out;
+				-moz-transition: margin 1s; /* Firefox 4 */
+				-o-transition: margin 1s; /* Opera */
+				-webkit-transition: margin 1s; /* Safari and Chrome */
+			width: 1000px;
+			z-index: -1; }
+					 
+		#team1 {
+			color: white;
+			display: block;
+			float: left;
+			font-size: 13.01pt;
+			margin-left: -18px;
+			padding-top: 15px;
+			width: 103px; }
+		 
+		#team1_score {
+			color: white;
+			display: block;
+			float: left;
+			font-size: 40.01pt;
+			margin-left: 25px;
+			padding-top: 5px;
+			text-align: right;
+			width: 65px; }
+		 
+		#team2 {
+			color: white;
+			display: block;
+			float: left;
+			font-size: 13.01pt;
+			margin-left: -15px;
+			padding-top: 15px; /* two lines */
+			/* padding-top: 25px;*/
+			width: 103px; }
+		 
+		#team2_score {
+			color: white;
+			display: block;
+			float: left;
+			font-size: 40.01pt;
+			margin-left: 25px;
+			padding-top: 5px;
+			text-align: right;
+			width: 65px; }
+		 
+		#clock {
+			color: white;
+			display: block;
+			float: left;
+			font-size: 30.01pt;
+			margin-left: 17px;
+			padding-top: 12px;
+			text-align: center;
+			width: 142px; }
+		 
+		#downdist {
+			color: white;
+			display: block;
+			float: left;
+			font-size: 25.01pt;
+			margin-left: 6px;
+			padding-top: 16px;
+			text-align: center;
+			width: 182px; }
+		 
+		#flag {
+			background: url(Scoreboard_flag.jpg);
+			color: black;
+			display: block;
+			display: none;
+			float: left;
+			font-size: 25.01pt;
+			margin-left: 6px;
+			margin-top: 6px;
+			padding-bottom: 11px;
+			padding-top: 10px;
+			text-align: center;
+			width: 182px; }
+		 
+		#qtr {
+			color: white;
+			display: block;
+			float: left;
+			font-size: 25.01pt;
+			margin-left: 6px;
+			padding-top: 16px;
+			text-align: center;
+			width: 135px; }
+		 
+		#team1_pos_arrow {
+			float: left;
+			margin-left: 287px;
+			padding-top: 6px;
+			visibility: hidden; }
+		 
+		#team2_pos_arrow {
+			float: left;
+			margin-left: 18px;
+			padding-top: 6px;
+			visibility: hidden; }
+		 
+		#team1_to1 {
+			background: #9a0a10;
+			float: left;
+			height: 6px;
+			margin-left: 320px;
+			margin-top: 65px;
+			position: absolute;
+			width: 40px; }
+		 
+		#team1_to2 {
+			background: #9a0a10;
+			float: left;
+			height: 6px;
+			margin-left: 375px;
+			margin-top: 65px;
+			position: absolute;
+			width: 40px; }
+		 
+		#team1_to3 {
+			background: #9a0a10;
+			float: left;
+			height: 6px;
+			margin-left: 430px;
+			margin-top: 65px;
+			position: absolute;
+			width: 40px; }
+		 
+		 /* Blue: #003fb7;*/
+		#team2_to1 {
+			background: #ff6341;
+			float: left;
+			height: 6px;
+			margin-left: 544px;
+			margin-top: 65px;
+			position: absolute;
+			width: 40px; }
+		 
+		#team2_to2 {
+			background: #ff6341;
+			float: left;
+			height: 6px;
+			margin-left: 599px;
+			margin-top: 65px;
+			position: absolute;
+			width: 40px; }
+		 
+		#team2_to3 {
+			background: #ff6341;
+			float: left;
+			height: 6px;
+			margin-left: 654px;
+			margin-top: 65px;
+			position: absolute;
+			width: 40px; }
+	
+	</style>
+	<script>
+	
+	var clock_going = 0;
+	
+	$(document).ready(function(){
+	
+	
+		// SHOW AD - REMOVED!!
+		$("#show_ad").click(function() {
+			$("#subscoreboard").css({"margin-top":"0"});
+			$("#subscoreboard").html($("#ad_msg").val());
+		});
+		$("#show_ad_1").click(function() {
+			$("#subscoreboard").css({"margin-top":"0"});
+			$("#subscoreboard").html("Follow us on twitter. @wasportsnetwork");
+			$("#ad_msg").val("Follow us on twitter. @wasportsnetwork");
+		});
+		$("#show_ad_2").click(function() {
+			$("#subscoreboard").css({"margin-top":"0"});
+			$("#subscoreboard").html("Like our broadcast? Let us know: comments@wasportsnetwork.com");
+			$("#ad_msg").val("Like our broadcast? Let us know: comments@wasportsnetwork.com");
+		});
+		$(".hide_ad").click(function() {
+			$("#subscoreboard").css({"margin-top":"-42px"});
+		});
+		
+		
+		
+		// TEAM 1 SCORE
+		
+    $("#team1_plus6").click(function() {
+   		var oldscore = parseInt($("#team1_score_input").val(), 10);
+   		var newscore = oldscore+6;
+   		$("#team1_score_input").val(newscore);
+   		$("#team1_score").text(newscore);
+    });
+    $("#team1_plus1").click(function() {
+   		var oldscore = parseInt($("#team1_score_input").val(), 10);
+   		var newscore = oldscore+1;
+   		$("#team1_score_input").val(newscore);
+   		$("#team1_score").text(newscore);
+    });
+    $("#team1_plus3").click(function() {
+   		var oldscore = parseInt($("#team1_score_input").val(), 10);
+   		var newscore = oldscore+3;
+   		$("#team1_score_input").val(newscore);
+   		$("#team1_score").text(newscore);
+    });
+    $("#team1_plus2").click(function() {
+   		var oldscore = parseInt($("#team1_score_input").val(), 10);
+   		var newscore = oldscore+2;
+   		$("#team1_score_input").val(newscore);
+   		$("#team1_score").text(newscore);
+    });
+    $("#team1_score_update").click(function() {
+   		var newscore = parseInt($("#team1_score_input").val(), 10);
+   		$("#team1_score_input").val(newscore);
+   		$("#team1_score").text(newscore);
+    });
+    $("#team1_score_input").keyup(function(event){
+    	if(event.keyCode == 13){
+        $("#team1_score_update").click();
+    	}
+		});
+
+
+		// TEAM 2 SCORE
+		
+    $("#team2_plus6").click(function() {
+   		var oldscore = parseInt($("#team2_score_input").val(), 10);
+   		var newscore = oldscore+6;
+   		$("#team2_score_input").val(newscore);
+   		$("#team2_score").text(newscore);
+    });
+    $("#team2_plus1").click(function() {
+   		var oldscore = parseInt($("#team2_score_input").val(), 10);
+   		var newscore = oldscore+1;
+   		$("#team2_score_input").val(newscore);
+   		$("#team2_score").text(newscore);
+    });
+    $("#team2_plus3").click(function() {
+   		var oldscore = parseInt($("#team2_score_input").val(), 10);
+   		var newscore = oldscore+3;
+   		$("#team2_score_input").val(newscore);
+   		$("#team2_score").text(newscore);
+    });
+    $("#team2_plus2").click(function() {
+   		var oldscore = parseInt($("#team2_score_input").val(), 10);
+   		var newscore = oldscore+2;
+   		$("#team2_score_input").val(newscore);
+   		$("#team2_score").text(newscore);
+    });
+    $("#team2_score_update").click(function() {
+   		var newscore = parseInt($("#team2_score_input").val(), 10);
+   		$("#team2_score_input").val(newscore);
+   		$("#team2_score").text(newscore);
+    });
+    $("#team2_score_input").keyup(function(event){
+    	if(event.keyCode == 13){
+        $("#team2_score_update").click();
+    	}
+		});
+		
+		
+		
+		// TIMEOUTS
+		// RED = 9a0a10
+		// GRAY = a1a1a1
+		// BLUE (CV) = 003fb7
+    $("#team1_3to").click(function() {
+    	$("#team1_to1").css({"background":"#9a0a10"});
+    	$("#team1_to2").css({"background":"#9a0a10"});
+   		$("#team1_to3").css({"background":"#9a0a10"});
+    });
+    $("#team1_2to").click(function() {
+    	$("#team1_to1").css({"background":"#9a0a10"});
+    	$("#team1_to2").css({"background":"#9a0a10"});
+   		$("#team1_to3").css({"background":"#a1a1a1"});
+    });
+    $("#team1_1to").click(function() {
+    	$("#team1_to1").css({"background":"#9a0a10"});
+    	$("#team1_to2").css({"background":"#a1a1a1"});
+   		$("#team1_to3").css({"background":"#a1a1a1"});
+    });
+    $("#team1_0to").click(function() {
+    	$("#team1_to1").css({"background":"#a1a1a1"});
+    	$("#team1_to2").css({"background":"#a1a1a1"});
+   		$("#team1_to3").css({"background":"#a1a1a1"});
+    });
+    $("#team2_3to").click(function() {
+    	$("#team2_to1").css({"background":"#ff6341"});
+    	$("#team2_to2").css({"background":"#ff6341"});
+   		$("#team2_to3").css({"background":"#ff6341"});
+    });
+    $("#team2_2to").click(function() {
+    	$("#team2_to1").css({"background":"#ff6341"});
+    	$("#team2_to2").css({"background":"#ff6341"});
+   		$("#team2_to3").css({"background":"#a1a1a1"});
+    });
+    $("#team2_1to").click(function() {
+    	$("#team2_to1").css({"background":"#ff6341"});
+    	$("#team2_to2").css({"background":"#a1a1a1"});
+   		$("#team2_to3").css({"background":"#a1a1a1"});
+    });
+    $("#team2_0to").click(function() {
+    	$("#team2_to1").css({"background":"#a1a1a1"});
+    	$("#team2_to2").css({"background":"#a1a1a1"});
+   		$("#team2_to3").css({"background":"#a1a1a1"});
+    });
+
+
+    
+    // DOWN DIST MESSAGE
+    $("#show_msg").click(function() {
+   		$("#downdist").text($("#downdist_input").val());
+    });
+    $("#downdist_input").keyup(function(event){
+    	if(event.keyCode == 13){
+        $("#show_msg").click();
+    	}
+		});
+		$("#show_kickoff").click(function() {
+   		$("#downdist").text("Kickoff");
+   		$("#pos_off").click();
+    });
+    $("#show_1st10").click(function() {
+   		$("#downdist").text("1st & 10");
+    });
+    $("#show_timeout").click(function() {
+   		$("#downdist").text("Timeout");
+    });
+    $("#show_clear").click(function() {
+   		$("#downdist").text("");
+    });        
+    
+    // QUARTER
+    $("#qtr_1").click(function() {
+   		$("#qtr").text("1st Qtr");
+    });
+    $("#qtr_2").click(function() {
+   		$("#qtr").text("2nd Qtr");
+   		$('#clock_input_min').val("12");
+   		$('#clock_input_sec').val("00");
+   		$('#clock_update').click();
+    });
+    $("#qtr_3").click(function() {
+   		$("#qtr").text("3rd Qtr");
+   		$('#clock_input_min').val("12");
+   		$('#clock_input_sec').val("00");
+   		$("#team1_3to").click();
+   		$("#team2_3to").click();
+   		$('#clock_update').click();
+    });
+    $("#qtr_4").click(function() {
+   		$("#qtr").text("4th Qtr");
+   		$('#clock_input_min').val("12");
+   		$('#clock_input_sec').val("00");
+   		$('#clock_update').click();
+    });
+    $("#qtr_ot").click(function() {
+   		$("#qtr").text("OT");
+    });
+    $("#qtr_half").click(function() {
+   		$("#qtr").text("Half");
+   		$("#downdist").text("");
+   		$('#clock_input_min').val("20");
+   		$('#clock_input_sec').val("00");
+   		$('#clock_update').click();
+   		$('#clock_start').click();
+    });
+    $("#qtr_final").click(function() {
+   		$("#qtr").text("FINAL");
+   		$("#downdist").text("");
+   		$("#clock").css({"visibility":"hidden"});
+   		$("#pos_off").click();
+   		$("#team1_0to").click();
+   		$("#team2_0to").click();
+    });
+    
+    
+    //POS
+		$("#team1_pos").click(function() {
+			$("#team1_pos_arrow").css({"visibility":"visible"});
+			$("#team2_pos_arrow").css({"visibility":"hidden"});
+    });
+    $("#team2_pos").click(function() {
+			$("#team2_pos_arrow").css({"visibility":"visible"});
+			$("#team1_pos_arrow").css({"visibility":"hidden"});
+    });
+    $("#pos_off").click(function() {
+			$("#team2_pos_arrow").css({"visibility":"hidden"});
+			$("#team1_pos_arrow").css({"visibility":"hidden"});
+    });
+    
+    
+    //FLAG
+		$("#flag_on").click(function() {
+			$("#flag").css({"display":"block"});
+			$("#downdist").css({"display":"none"});
+    });
+    $("#flag_off").click(function() {
+			$("#flag").css({"display":"none"});
+			$("#downdist").css({"display":"block"});
+    });
+    
+    
+    // CLOCK
+    $("#clock_start").click(function() {
+    	if(clock_going == 0) {
+			clock = setInterval('countdown()',1000);
+			clock_going = 1;
+			}
+    });
+    
+    $("#clock_stop").click(function() {
+			clearInterval(clock);
+			clock_going = 0;
+			$("#clock_input_min").val($('#clock_min').html());
+			$("#clock_input_sec").val($('#clock_sec').html());
+    });
+    
+    $("#clock_update").click(function() {
+    	//clock_going = 0; clearInterval(clock); // THIS WOULD STOP THE CLOCK WHILE UPDATING - uncomment if needed
+			$('#clock_min').html($("#clock_input_min").val());
+			$('#clock_sec').html($("#clock_input_sec").val());
+    });
+    
+    $("#clock_plus").click(function() {
+
+			clearInterval(clock);
+    	var m = $('#clock_min');
+    	var s = $('#clock_sec');
+    	if((parseInt(s.html())==59)) {
+    		m.html(parseInt(m.html())+1);
+    		s.html("00");
+    	} else {
+    		if((parseInt(s.html())+1) < 10) { s.html("0" + (parseInt(s.html())+1)); } else {
+    		s.html(parseInt(s.html())+1); }
+    	}
+    	if(clock_going == 1) { clock = setInterval('countdown()',1000); }
+    	
+    	$("#clock_input_min").val($('#clock_min').html());
+			$("#clock_input_sec").val($('#clock_sec').html());
+
+    });
+    
+    $("#clock_minus").click(function() {
+			
+			clearInterval(clock);
+    	var m = $('#clock_min');
+    	var s = $('#clock_sec');
+    	if((parseInt(s.html())==00)) {
+    		m.html(parseInt(m.html())-1);
+    		s.html("59");
+    	} else {
+    		if((parseInt(s.html())-1) < 10) { s.html("0" + (parseInt(s.html())-1)); } else {
+    		s.html(parseInt(s.html())-1); }
+    	}
+    	if(clock_going == 1) { clock = setInterval('countdown()',1000); }
+    	
+    	$("#clock_input_min").val($('#clock_min').html());
+			$("#clock_input_sec").val($('#clock_sec').html());
+			
+    });
+    
+    $("#clock_input_min").keyup(function(event){
+    	if(event.keyCode == 13){
+        $("#clock_update").click();
+    	}
+		});
+		
+		$("#clock_input_sec").keyup(function(event){
+    	if(event.keyCode == 13){
+        $("#clock_update").click();
+    	}
+		});
+    
+ 	});
+ 	
+ 	//http://www.makewebgames.com/showthread.php/38968-jQuery-Second-Minute-Countdown
+ 	
+ 	function countdown() {
+    var m = $('#clock_min');
+    var s = $('#clock_sec');  
+    if(m.html() == "0" && s.html() == "00") {
+      clearInterval(clock);
+      clock_going = 0;
+      return;
+    }
+    if(parseInt(s.html()) <= 0) {
+        m.html(parseInt(m.html()-1));   
+        s.html(60);
+    }
+    if((parseInt(s.html()-1)<10)) { s.html("0" + parseInt(s.html()-1)); } else {
+    s.html(parseInt(s.html()-1)); }
+	}
+	
+	$(document).keyup(function(event){
+    	if(event.keyCode == 37){ //left
+        $("#clock_start").click(); 
+    	}
+    	if(event.keyCode == 38){ //up
+        $("#clock_plus").click(); 
+    	}
+    	if(event.keyCode == 39){ //right
+        $("#clock_stop").click(); 
+    	}
+    	if(event.keyCode == 40){ //down
+        $("#clock_minus").click(); 
+    	}
+	});
+
+	</script>
+</head>
+
+<body>
+
+<div id="WIRECAST">
+<div id="scoreboard">
+<img src="Scoreboard_arrow_RED.png" width="29" height="59" id="team1_pos_arrow" />
+<span id="team1">WEST<br />ALLEGHENY</span>
+<div id="team1_to1"></div>
+<div id="team1_to2"></div>
+<div id="team1_to3"></div>
+<span id="team1_score">0</span>
+<img src="Scoreboard_arrow_ORANGE.png" width="29" height="59" id="team2_pos_arrow" />
+<span id="team2">CATHEDRAL<br />PREP</span>
+<div id="team2_to1"></div>
+<div id="team2_to2"></div>
+<div id="team2_to3"></div>
+<span id="team2_score">0</span>
+<div id="clock"><span id="clock_min">12</span>:<span id="clock_sec">00</span></div>
+<span id="downdist">Pre-Game</span>
+<span id="flag">FLAG</span>
+<span id="qtr">1st Qtr</span>
+</div>
+</div>
+
+<div id="control_area">
+WA Score: <input type="text" name="team1_score" value="0" id="team1_score_input" /> <button id="team1_plus6">+6</button><button id="team1_plus1">+1</button><button id="team1_plus3">+3</button><button id="team1_plus2">+2</button><button id="team1_score_update">UPDATE</button><button id="team1_pos">WA Possession</button><br />
+WA Timeouts: <button id="team1_3to">3 TO</button><button id="team1_2to">2 TO</button><button id="team1_1to">1 TO</button><button id="team1_0to">0 TO</button>
+<br /><br />
+
+ECP Score: <input type="text" name="team2_score" value="0" id="team2_score_input" /> <button id="team2_plus6">+6</button><button id="team2_plus1">+1</button><button id="team2_plus3">+3</button><button id="team2_plus2">+2</button><button id="team2_score_update">UPDATE</button><button id="team2_pos">ECP Possession</button><button id="pos_off">Possession Off</button><br />
+ECP Timeouts: <button id="team2_3to">3 TO</button><button id="team2_2to">2 TO</button><button id="team2_1to">1 TO</button><button id="team2_0to">0 TO</button>
+<br /><br />
+
+Clock: <input type="text" name="clock_min" value="12" id="clock_input_min" style="width:25px;" />:<input type="text" name="clock_sec" value="00" id="clock_input_sec" style="width:25px;" /> <button id="clock_update">UPDATE</button><button id="clock_start">START CLOCK</button><button id="clock_stop">STOP CLOCK</button><button id="clock_plus">+</button><button id="clock_minus">-</button>
+<div style="font-weight:normal">Left Arrow: START CLOCK<br />
+Right Arrow: STOP CLOCK<br />
+Up Arrow: PLUS SECOND<br />
+Down Arrow: MINUS SECOND</div>
+<br />
+
+Down & Distance / Message: <input type="text" name="downdist" value="" id="downdist_input" /> <button id="show_msg">SHOW</button><button id="show_clear">CLEAR</button><button id="show_kickoff">Kickoff</button><button id="show_1st10">1st & 10</button><button id="show_timeout">Timeout</button><br /><br />
+
+FLAG: <button id="flag_on">FLAG ON</button><button id="flag_off">FLAG OFF</button><br /><br />
+
+Quarter: <button id="qtr_1">1st</button><button id="qtr_2">2nd</button><button id="qtr_half">HALF</button><button id="qtr_3">3rd</button><button id="qtr_4">4th</button><button id="qtr_ot">OT</button><button id="qtr_final">FINAL</button><br /><i style="font-weight:normal;">Updating the quarter also resets the clock.</i><br /><br />
+
+</div>
+
+</body>
+
+</html>
